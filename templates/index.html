@@ -1,0 +1,400 @@
+<!-- <head>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #f7fafc;
+      font-family: "Arial", sans-serif;
+    }
+
+    main {
+      max-width: 400px;
+      width: 100%;
+      padding: 2rem;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 1.5rem;
+    }
+
+    form {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    input[type="text"] {
+      flex: 1;
+      padding: 0.75rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 1rem;
+      outline: none;
+    }
+
+    button[type="submit"] {
+      background-color: #4c51bf;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      padding: 0.75rem 1rem;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button[type="submit"]:hover {
+      background-color: #434190;
+    }
+
+    .share-buttons {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .share-buttons button {
+      flex: 1;
+      margin-right: 0.5rem;
+      padding: 0.75rem;
+      border: none;
+      border-radius: 4px;
+      font-size: 0.9rem;
+      font-weight: bold;
+      color: #fff;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .share-buttons button:last-child {
+      margin-right: 0;
+    }
+
+    .share-buttons button#facebook-share {
+      background-color: #1877f2;
+    }
+
+    .share-buttons button#facebook-share:hover {
+      background-color: #145dae;
+    }
+
+    .share-buttons button#twitter-share {
+      background-color: #1da1f2;
+    }
+
+    .share-buttons button#twitter-share:hover {
+      background-color: #0c80bc;
+    }
+
+    .share-buttons button#instagram-share {
+      background-color: #c13584;
+    }
+
+    .share-buttons button#instagram-share:hover {
+      background-color: #9c0f56;
+    }
+
+    section {
+      min-height: 120px;
+      text-align: center;
+      background-color: #f7fafc;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 1rem;
+      font-size: 1rem;
+      color: #333;
+    }
+  </style>
+</head>
+
+<body>
+  <main>
+    <h1>URL Shortener</h1>
+    <form id="post-form">
+      {% csrf_token %}
+      <input type="text" name="link" id="link" placeholder="Enter URL here">
+      <button type="submit" id="shorten">Shorten</button>
+    </form>
+
+    <section id="section"><h2></h2></section>
+
+    <div class="share-buttons">
+      <button type="button" id="facebook-share">Share on Facebook</button>
+      <button type="button" id="twitter-share">Share on Twitter</button>
+      <button type="button" id="instagram-share">Share on Instagram</button>
+    </div>
+
+    <section id="section">
+      <h2>{{ url_details.title }}</h2>
+      <p>{{ url_details.description }}</p>
+      {% if url_details.image_url %}
+          <img src="{{ url_details.image_url }}" alt="Link Preview">
+      {% endif %}
+  </section>
+  
+  </main>
+
+  <script type="text/javascript">
+    $(document).on('submit', '#post-form', function(e) {
+      e.preventDefault();
+
+      $.ajax({
+        type: 'POST',
+        url: '/create',
+        data: {
+          link: $('#link').val(),
+          csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+        },
+        success: function(data) {
+          console.log(data);
+          $('h2').html("127.0.0.1:8000/" + data);
+        }
+      });
+    });
+
+    $(document).on('click', '#facebook-share', function() {
+      var url = window.location.href; // Get the current page URL
+      var facebookUrl = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(url);
+      window.open(facebookUrl, '_blank');
+    });
+
+    $(document).on('click', '#twitter-share', function() {
+      var url = window.location.href; // Get the current page URL
+      var twitterUrl = 'https://twitter.com/intent/tweet?url=' + encodeURIComponent(url);
+      window.open(twitterUrl, '_blank');
+    });
+
+    $(document).on('click', '#instagram-share', function() {
+      var url = window.location.href; // Get the current page URL
+      var instagramUrl = 'https://www.instagram.com/?url=' + encodeURIComponent(url);
+      window.open(instagramUrl, '_blank');
+    });
+  </script>
+</body> -->
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>URL Shortener</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #f7f7f7;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    h1 {
+      color: #333;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    form {
+      display: flex;
+      margin-bottom: 30px;
+    }
+
+    input[type="text"] {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+      outline: none;
+    }
+
+    button[type="submit"] {
+      background-color: #4c51bf;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      padding: 10px 20px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button[type="submit"]:hover {
+      background-color: #434190;
+    }
+
+    #url-details {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    #url-details h2 {
+      color: #333;
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    #url-details p {
+      color: #666;
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+
+    #url-details img {
+      max-width: 100%;
+      height: auto;
+      margin-bottom: 20px;
+    }
+
+    #shortened-url {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    #shortened-url h3 {
+      color: #333;
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    #shortened-link {
+      color: #4c51bf;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    #share-buttons {
+      text-align: center;
+    }
+
+    #share-buttons h3 {
+      color: #333;
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    #share-buttons button {
+      background-color: #4c51bf;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      padding: 10px 20px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-right: 10px;
+    }
+
+    #share-buttons button:last-child {
+      margin-right: 0;
+    }
+
+    #share-buttons button:hover {
+      background-color: #434190;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>URL Shortener</h1>
+
+    <form id="post-form">
+      {% csrf_token %}
+      <input type="text" name="link" id="link" placeholder="Enter URL here">
+      <button type="submit" id="shorten">Shorten</button>
+    </form>
+
+    <div id="url-details">
+      <h2>{{ url_details.title }}</h2>
+      <p>{{ url_details.description }}</p>
+      {% if url_details.image_url %}
+        <img src="{{ url_details.image_url }}" alt="Link Preview">
+      {% endif %}
+    </div>
+
+    <div id="shortened-url">
+      {% if uid %}
+        <h3>Shortened Link:</h3>
+        <a href="{{ request.get_host }}/{{ uid }}" id="shortened-link" target="blank">{{ request.get_host }}/{{ uid }}</a>
+      {% endif %}
+    </div>
+    <!-- QR code section -->
+      <!-- QR code section -->
+      <div id="qr-code">
+        {% if qr_code_url %}
+          <h3>QR Code:</h3>
+          <br>
+          <img src="{{ qr_code_url }}" alt="QR Code">
+        {% endif %}
+      </div>
+    <div id="share-buttons">
+      <h3>Share on:</h3>
+      <button type="button" id="facebook-share">Facebook</button>
+      <button type="button" id="twitter-share">Twitter</button>
+      <button type="button" id="instagram-share">Instagram</button>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script type="text/javascript">
+    $(document).on('submit', '#post-form', function(e) {
+      e.preventDefault();
+
+      $.ajax({
+        type: 'POST',
+        url: '/create',
+        data: {
+          link: $('#link').val(),
+          csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+        },
+        success: function(data) {
+          console.log(data);
+
+          $('#shortened-url').html('<h3>Shortened Link:</h3><a href="/' + data.uid + '" id="shortened-link">{{ request.get_host }}/' + data.uid + '</a>');
+          $('#url-details').html('<h2>' + data.title + '</h2><p>' + data.description + '</p>' + (data.image_url ? '<img src="' + data.image_url + '" alt="Link Preview">' : ''));
+          $('#qr-code').html('<h3>QR Code:</h3><br><img src="' + data.qr_code_url + '" alt="QR Code">');
+        }
+      });
+    });
+
+    $(document).on('click', '#facebook-share', function() {
+      var url = window.location.href;
+      var facebookUrl = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(url);
+      window.open(facebookUrl, '_blank');
+    });
+
+    $(document).on('click', '#twitter-share', function() {
+      var url = window.location.href;
+      var twitterUrl = 'https://twitter.com/intent/tweet?url=' + encodeURIComponent(url);
+      window.open(twitterUrl, '_blank');
+    });
+
+    $(document).on('click', '#instagram-share', function() {
+      var url = window.location.href;
+      var instagramUrl = 'https://www.instagram.com/?url=' + encodeURIComponent(url);
+      window.open(instagramUrl, '_blank');
+    });
+  </script>
+</body>
+</html>
